@@ -2,6 +2,7 @@ package com.pranshulgg.recordmaster.ui.components
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaMetadataRetriever
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -40,10 +41,11 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.pranshulgg.recordmaster.R
+import java.io.File
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun DropdownMenu(navController: NavController, onDelete: () -> Unit, onShare: () -> Unit) {
+fun DropdownMenu(navController: NavController, onDelete: () -> Unit, onShare: () -> Unit, file: File) {
     var expanded by remember { mutableStateOf(false) }
     var showAboutBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(
@@ -121,6 +123,14 @@ fun DropdownMenu(navController: NavController, onDelete: () -> Unit, onShare: ()
                 }
             }
         ) {
+            SettingSection(
+                tiles = listOf(
+                    SettingTile.TextTile(
+                        title = "Encoding",
+                        description = getAudioEncoding(file)
+                    )
+                )
+            )
         }
         }
 
@@ -154,3 +164,17 @@ fun DropDownMenuText(text: String) =
 @Composable
 fun DropDownMenuIcon(icon: Int) =
     Symbol(icon, color = MaterialTheme.colorScheme.onSurface, size = 22.dp, paddingStart = 3.dp)
+
+
+
+fun getAudioEncoding(file: File): String {
+    return try {
+        val retriever = MediaMetadataRetriever()
+        retriever.setDataSource(file.absolutePath)
+        val mime = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
+        retriever.release()
+        mime ?: file.extension
+    } catch (e: Exception) {
+        file.extension
+    }
+}

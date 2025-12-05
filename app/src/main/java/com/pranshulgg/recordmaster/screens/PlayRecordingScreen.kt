@@ -178,7 +178,8 @@ fun PlayRecordingScreen(filePath: String, onDone: () -> Unit, navController: Nav
                         } catch (e: Exception) {
 
                         }
-                    }
+                    },
+                    file = file
                 )
             }
         )
