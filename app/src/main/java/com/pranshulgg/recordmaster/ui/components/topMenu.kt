@@ -8,12 +8,17 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +37,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.pranshulgg.recordmaster.R
+import kotlinx.coroutines.launch
 import java.io.File
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
@@ -51,10 +58,11 @@ fun DropdownMenu(navController: NavController, onDelete: () -> Unit, onShare: ()
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    val scope = rememberCoroutineScope()
 
     var showCurrentRecordDeleteDialog by remember { mutableStateOf(false) }
 
-
+    val info = getAudioInfo(file)
 
     Tooltip("More options", preferredPosition = TooltipAnchorPosition.Below, spacing = 10.dp) {
         IconButton(
@@ -123,14 +131,53 @@ fun DropdownMenu(navController: NavController, onDelete: () -> Unit, onShare: ()
                 }
             }
         ) {
-            SettingSection(
-                tiles = listOf(
-                    SettingTile.TextTile(
-                        title = "Encoding",
-                        description = getAudioEncoding(file)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(Modifier.height(12.dp))
+                SettingSection(
+                    tiles = listOf(
+                        SettingTile.TextTile(
+                            leading = { SettingsTileIcon(R.drawable.graphic_eq_24px) },
+                            title = "Encoding",
+                            description = info.encoding
+                        ),
+                        SettingTile.TextTile(
+                            leading = { SettingsTileIcon(R.drawable.clock_loader_60_24px) },
+                            title = "Audio duration",
+                            description = formatDuration(info.duration)
+                        ),
+                        SettingTile.TextTile(
+                            leading = { SettingsTileIcon(R.drawable.storage_24px) },
+                            title = "File size",
+                            description = formatFileSize(info.size)
+                        ),
+                        SettingTile.TextTile(
+                            leading = { SettingsTileIcon(R.drawable.folder_24px) },
+                            title = "File path",
+                            description = info.path
+                        )
                     )
                 )
-            )
+
+                Spacer(Modifier.height(12.dp))
+                Button(
+                    onClick = {
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showAboutBottomSheet = false
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(fraction = 0.9f)
+                ) {
+                    Text("Close")
+                }
+
+                Spacer(Modifier.height(10.dp))
+
+            }
+
         }
         }
 
@@ -176,5 +223,65 @@ fun getAudioEncoding(file: File): String {
         mime ?: file.extension
     } catch (e: Exception) {
         file.extension
+    }
+}
+
+fun getAudioInfo(file: File): AudioInfo {
+    return try {
+        val retriever = MediaMetadataRetriever()
+        retriever.setDataSource(file.absolutePath)
+
+        val mime = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)
+        val durationMs =
+            retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull()
+                ?: 0L
+
+        retriever.release()
+
+        AudioInfo(
+            encoding = mime ?: file.extension,
+            duration = durationMs,
+            size = file.length(),
+            path = file.absolutePath
+        )
+    } catch (e: Exception) {
+        AudioInfo(
+            encoding = file.extension,
+            duration = 0L,
+            size = file.length(),
+            path = file.absolutePath
+        )
+    }
+}
+
+data class AudioInfo(
+    val encoding: String,
+    val duration: Long,
+    val size: Long,
+    val path: String
+)
+
+fun formatDuration(ms: Long): String {
+    val totalSeconds = ms / 1000
+    val hours = totalSeconds / 3600
+    val minutes = (totalSeconds % 3600) / 60
+    val seconds = totalSeconds % 60
+
+    return if (hours > 0)
+        String.format("%d:%02d:%02d", hours, minutes, seconds)
+    else
+        String.format("%02d:%02d", minutes, seconds)
+}
+
+fun formatFileSize(bytes: Long): String {
+    val kb = 1024.0
+    val mb = kb * 1024
+    val gb = mb * 1024
+
+    return when {
+        bytes >= gb -> String.format("%.2f GB", bytes / gb)
+        bytes >= mb -> String.format("%.2f MB", bytes / mb)
+        bytes >= kb -> String.format("%.2f KB", bytes / kb)
+        else -> "$bytes B"
     }
 }
