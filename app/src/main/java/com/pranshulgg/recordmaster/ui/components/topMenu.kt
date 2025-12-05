@@ -6,7 +6,11 @@ import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
@@ -16,13 +20,16 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TooltipAnchorPosition
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +45,10 @@ import com.pranshulgg.recordmaster.R
 @Composable
 fun DropdownMenu(navController: NavController, onDelete: () -> Unit, onShare: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
+    var showAboutBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
     var showCurrentRecordDeleteDialog by remember { mutableStateOf(false) }
 
@@ -79,6 +90,7 @@ fun DropdownMenu(navController: NavController, onDelete: () -> Unit, onShare: ()
         DropdownMenuItem(
             text = { DropDownMenuText("About file") },
             onClick = {
+                showAboutBottomSheet = true
                 expanded = false
             },
             leadingIcon = { DropDownMenuIcon(R.drawable.info_24px) }
@@ -86,7 +98,34 @@ fun DropdownMenu(navController: NavController, onDelete: () -> Unit, onShare: ()
     }
 
 
-    if (showCurrentRecordDeleteDialog) {
+
+    if (showAboutBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showAboutBottomSheet = false
+            },
+            sheetState = sheetState,
+            dragHandle = {
+                Box(
+                    modifier = Modifier.padding(top = 22.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .width(32.dp)
+                            .height(4.dp)
+                            .background(
+                                MaterialTheme.colorScheme.onSurfaceVariant,
+                                RoundedCornerShape(50.dp)
+                            )
+                    )
+                }
+            }
+        ) {
+        }
+        }
+
+
+        if (showCurrentRecordDeleteDialog) {
         ConfirmDialog(
             title = "Delete recording",
             message = "The recording will be permanently deleted and cannot be undone",
