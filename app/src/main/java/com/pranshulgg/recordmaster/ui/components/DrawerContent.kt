@@ -36,8 +36,9 @@ fun DrawerContent(
     onRequestDeleteFolder: (folderName: String) -> Unit,
     onfoldersExpanded: (Boolean) -> Unit,
     foldersExpanded: Boolean,
-    navController: NavController
-) {
+    navController: NavController,
+    closeDrawer: () -> Unit
+    ) {
 
     val folders = remember(rootDirKey) {
         (musicDir.listFiles() ?: emptyArray())
@@ -99,6 +100,7 @@ fun DrawerContent(
                 },
                 onClick = {
                     navController.navigate("OpenSettings")
+                    closeDrawer()
                 }
             )
 
