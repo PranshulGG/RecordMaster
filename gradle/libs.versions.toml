@@ -15,6 +15,7 @@ nav_compose = "2.9.5"
 navigationRuntimeKtx = "2.9.5"
 runtime = "1.9.4"
 animation = "1.9.4"
+colorpickerVer = "1.1.2"
 
 
 [libraries]
@@ -39,6 +40,7 @@ androidx-compose-animation = { group = "androidx.compose.animation", name = "ani
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 androidx-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "animation" }
+colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpickerVer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

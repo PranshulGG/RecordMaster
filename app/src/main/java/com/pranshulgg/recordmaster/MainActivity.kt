@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
@@ -50,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.pranshulgg.recordmaster.helpers.PreferencesHelper
 import com.pranshulgg.recordmaster.helpers.SnackbarManager
 import com.pranshulgg.recordmaster.screens.HomeScreen
 import com.pranshulgg.recordmaster.screens.PlayRecordingScreen
@@ -64,6 +66,7 @@ import com.pranshulgg.recordmaster.utils.NavTransitions
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        PreferencesHelper.init(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -78,7 +81,35 @@ class MainActivity : ComponentActivity() {
                 SnackbarManager.init(snackbarHostState, scope)
             }
 
-            RecordMasterTheme() {
+            var darkTheme by remember {
+                mutableStateOf(
+                    PreferencesHelper.getBool("dark_theme") ?: false
+                )
+            }
+            var colorSeed by remember {
+                mutableStateOf(
+                    PreferencesHelper.getString("seedColor") ?: "0xff0000FF"
+                )
+            }
+            var useDynamicColor by remember {
+                mutableStateOf(
+                    PreferencesHelper.getBool("useDynamicColors") ?: false
+                )
+            }
+            var useExpressiveColor by remember {
+                mutableStateOf(
+                    PreferencesHelper.getBool("useExpressiveColor") ?: true
+                )
+            }
+
+            val context = LocalContext.current;
+
+            RecordMasterTheme(
+                darkTheme = darkTheme,
+                seedColor = Color(colorSeed.removePrefix("0x").toLong(16).toInt()),
+                dynamicColor = useDynamicColor,
+                useExpressive = useExpressiveColor
+            ) {
                 NavHost(
                     modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                     navController = navController, startDestination = "homePage",
@@ -100,7 +131,23 @@ class MainActivity : ComponentActivity() {
 
                     composable("homePage") { HomeScreen(navController, snackbarHostState = snackbarHostState) }
                     composable("record") { RecordingScreen(onDone = { navController.popBackStack() }) }
-                    composable("OpenSettings") { SettingsPage(navController = navController) }
+                    composable("OpenSettings") { SettingsPage(
+                        navController = navController,
+                        context = context,
+                        onThemeChanged = { isDark ->
+                            darkTheme = isDark
+                        },
+                        onSeedChanged = { color ->
+                            colorSeed = color
+                        },
+                        onDynamicColorChanged = { useDynamicColors ->
+                            useDynamicColor = useDynamicColors
+                        },
+                        onExpressiveColorChanged = { useExpressiveColors ->
+                            useExpressiveColor = useExpressiveColors
+                        },
+                        snackbarHostState = snackbarHostState,
+                    ) }
                     composable("play/{path}") { backStackEntry ->
                         val encoded = backStackEntry.arguments?.getString("path")
 
