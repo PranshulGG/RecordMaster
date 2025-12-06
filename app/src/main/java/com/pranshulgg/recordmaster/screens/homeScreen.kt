@@ -271,7 +271,10 @@ fun HomeScreen(navController: NavController, snackbarHostState: SnackbarHostStat
                     foldersExpanded = value
                 },
                 foldersExpanded = foldersExpanded,
-                navController = navController
+                navController = navController,
+                closeDrawer = {
+                    scope.launch { drawerState.close() }
+                }
             )
         }
     ) {
