@@ -270,8 +270,8 @@ fun HomeScreen(navController: NavController, snackbarHostState: SnackbarHostStat
                 onfoldersExpanded = { value ->
                     foldersExpanded = value
                 },
-                foldersExpanded = foldersExpanded
-
+                foldersExpanded = foldersExpanded,
+                navController = navController
             )
         }
     ) {

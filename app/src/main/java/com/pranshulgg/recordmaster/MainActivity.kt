@@ -54,6 +54,7 @@ import com.pranshulgg.recordmaster.helpers.SnackbarManager
 import com.pranshulgg.recordmaster.screens.HomeScreen
 import com.pranshulgg.recordmaster.screens.PlayRecordingScreen
 import com.pranshulgg.recordmaster.screens.RecordingScreen
+import com.pranshulgg.recordmaster.screens.SettingsPage
 import com.pranshulgg.recordmaster.ui.components.RecorderSearchBar
 import com.pranshulgg.recordmaster.ui.components.Symbol
 import com.pranshulgg.recordmaster.ui.components.Tooltip
@@ -99,6 +100,7 @@ class MainActivity : ComponentActivity() {
 
                     composable("homePage") { HomeScreen(navController, snackbarHostState = snackbarHostState) }
                     composable("record") { RecordingScreen(onDone = { navController.popBackStack() }) }
+                    composable("OpenSettings") { SettingsPage(navController = navController) }
                     composable("play/{path}") { backStackEntry ->
                         val encoded = backStackEntry.arguments?.getString("path")
 

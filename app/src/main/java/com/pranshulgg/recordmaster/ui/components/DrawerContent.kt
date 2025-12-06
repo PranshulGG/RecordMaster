@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.pranshulgg.recordmaster.R
 import kotlinx.coroutines.launch
 
@@ -34,7 +35,8 @@ fun DrawerContent(
     onRequestCreateFolder: () -> Unit,
     onRequestDeleteFolder: (folderName: String) -> Unit,
     onfoldersExpanded: (Boolean) -> Unit,
-    foldersExpanded: Boolean
+    foldersExpanded: Boolean,
+    navController: NavController
 ) {
 
     val folders = remember(rootDirKey) {
@@ -89,6 +91,16 @@ fun DrawerContent(
             )
 
 
+            NavigationDrawerItem(
+                label = { Text("Settings") },
+                selected = false,
+                icon = {
+                        Symbol(R.drawable.settings_outlined_24px, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                },
+                onClick = {
+                    navController.navigate("OpenSettings")
+                }
+            )
 
             Spacer(modifier = Modifier.height(14.dp))
 

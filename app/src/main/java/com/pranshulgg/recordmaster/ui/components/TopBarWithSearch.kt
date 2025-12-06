@@ -109,8 +109,6 @@ fun TopBarWithSearch(
                     )
                 }
             }
-
-
         },
         title = {
             if (showSearch) {
