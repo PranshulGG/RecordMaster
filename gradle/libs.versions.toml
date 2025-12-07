@@ -16,7 +16,7 @@ navigationRuntimeKtx = "2.9.5"
 runtime = "1.9.4"
 animation = "1.9.4"
 colorpickerVer = "1.1.2"
-
+markdownVer = "0.5.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +41,7 @@ androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navig
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 androidx-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "animation" }
 colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpickerVer" }
+markdown-compose = {module = "com.github.jeziellago:compose-markdown", version.ref = "markdownVer"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
