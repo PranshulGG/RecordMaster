@@ -232,9 +232,12 @@ fun SettingsPage(
                     title = "Additional",
                     tiles = listOf(
                         SettingTile.ActionTile(
+                            leading = {SettingsTileIcon(R.drawable.info_24px)},
                             title = "About app",
                             description = "Terms, Version, License, and More",
-                            onClick = {}
+                            onClick = {
+                                navController.navigate("OpenAboutScreen")
+                            },
                         )
                     )
                 )
