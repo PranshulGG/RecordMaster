@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -222,6 +223,19 @@ fun SettingsPage(
                                 useDynamicColor = checked
                             }
                         ),
+                    )
+                )
+            }
+            item {
+                Spacer(Modifier.height(10.dp))
+                SettingSection(
+                    title = "Additional",
+                    tiles = listOf(
+                        SettingTile.ActionTile(
+                            title = "About app",
+                            description = "Terms, Version, License, and More",
+                            onClick = {}
+                        )
                     )
                 )
             }
