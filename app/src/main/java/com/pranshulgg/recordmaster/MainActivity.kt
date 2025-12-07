@@ -53,10 +53,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pranshulgg.recordmaster.helpers.PreferencesHelper
 import com.pranshulgg.recordmaster.helpers.SnackbarManager
+import com.pranshulgg.recordmaster.screens.AboutScreen
 import com.pranshulgg.recordmaster.screens.HomeScreen
 import com.pranshulgg.recordmaster.screens.PlayRecordingScreen
+import com.pranshulgg.recordmaster.screens.PolicyPage
 import com.pranshulgg.recordmaster.screens.RecordingScreen
 import com.pranshulgg.recordmaster.screens.SettingsPage
+import com.pranshulgg.recordmaster.screens.TermsPage
 import com.pranshulgg.recordmaster.ui.components.RecorderSearchBar
 import com.pranshulgg.recordmaster.ui.components.Symbol
 import com.pranshulgg.recordmaster.ui.components.Tooltip
@@ -153,6 +156,25 @@ class MainActivity : ComponentActivity() {
 
                         val path = encoded?.let { android.net.Uri.decode(it) }
                         path?.let { PlayRecordingScreen(filePath = it, onDone = { navController.popBackStack() }, navController = navController) }
+                    }
+                    composable(
+                        "OpenAboutScreen",
+
+                        ) {
+                        AboutScreen(
+                            snackbarHostState = snackbarHostState,
+                            navController = navController
+                        )
+                    }
+                    composable(
+                        "OpenTermsConditionScreen",
+                    ) {
+                        TermsPage(navController = navController)
+                    }
+                    composable(
+                        "OpenPrivacyPolicyScreen",
+                    ) {
+                        PolicyPage(navController = navController)
                     }
                 }
             }
