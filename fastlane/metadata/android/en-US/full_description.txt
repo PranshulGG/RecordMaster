@@ -1,0 +1,16 @@
+<p><i>RecordMaster</i> inspired by the Google Pixel Recorder app, but with more features</p>
+
+<p><br><b>Features:</b></p>
+<li><b>✨ More features will be added in future updates.</b></li>
+<ul>
+    <li><b>📁 Folder Organization:</b> Create and manage folders to keep your recordings sorted.</li>
+    <li><b>✏️ Easy Renaming:</b> Rename recordings on the fly for better organization.</li>
+    <li><b>🔗 Quick Sharing:</b> Share recordings instantly through apps, messaging, or cloud services.</li>
+    <li><b>🕒 Timestamped Files:</b> Automatically save recordings with date and time metadata.</li>
+    <li><b>🔊 Playback Controls:</b> Adjust speed, skip silence, and navigate smoothly.</li>
+    <li><b>🗑️ Trash Bin:</b> Recover deleted recordings before they’re permanently removed.</li>
+    <li><b>📤 Export Options:</b> Save recordings in multiple audio formats (MP3, WAV, etc.).</li>
+    <li><b>🔍 Search Tool:</b> Find recordings by name, date, or folder.</li>
+    <li><b>☁️ Local-Only Mode:</b> All recordings stay on your device unless you choose to share them.</li>
+
+</ul>
