@@ -59,7 +59,6 @@ import com.pranshulgg.recordmaster.ui.components.ConfirmDialog
 
 
 var mainTitle = "Record"
-var mainSub = ""
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class,
     ExperimentalAnimationApi::class
