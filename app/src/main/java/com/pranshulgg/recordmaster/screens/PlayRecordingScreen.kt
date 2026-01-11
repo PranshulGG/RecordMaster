@@ -75,7 +75,7 @@ fun PlayRecordingScreen(filePath: String, onDone: () -> Unit, navController: Nav
     val coroutineScope = rememberCoroutineScope()
 
     val requestedBarCount = 140
-    val maxVisibleBars = 100
+    val maxVisibleBars = 120
 
     val staticAmpsState = remember { mutableStateOf<FloatArray?>(null) }
     var isComputing by remember { mutableStateOf(false) }
@@ -222,7 +222,7 @@ fun PlayRecordingScreen(filePath: String, onDone: () -> Unit, navController: Nav
                     barCount = displayBarCount,
                     staticAmps = staticAmpsState.value,
                     barWidth = 8.dp,
-                    barSpacing = 6.dp,
+                    barSpacing = 5.dp,
                     isUserSeeking = isUserSeeking
                 )
 
