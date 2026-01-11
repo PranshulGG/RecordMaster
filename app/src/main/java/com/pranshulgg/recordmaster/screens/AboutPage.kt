@@ -192,20 +192,7 @@ fun AboutScreen(snackbarHostState: SnackbarHostState, navController: NavControll
                     Column(
                         modifier = Modifier.padding(top = 12.dp)
                     ) {
-                        ListItem(
-                            colors = ListItemDefaults.colors(
-                                containerColor = MaterialTheme.colorScheme.surfaceContainer
-                            ),
-                            headlineContent = { Text("Third party licenses") },
-                            leadingContent = { IconAvatarLeading(R.drawable.copyright_24px) },
-                            modifier = Modifier
-                                .clickable(
-                                    onClick = {
-//                                        navController.navigate("OpenAboutLibScreen")
-                                    }
-                                )
-                                .height(60.dp)
-                        )
+
                         ListItem(
                             colors = ListItemDefaults.colors(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainer
